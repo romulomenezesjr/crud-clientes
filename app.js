@@ -13,6 +13,34 @@ function adicionarCliente(lista, cliente) {
   return lista;
 }
 
+function excluirCliente(id) {
+  const novaLista = removerCliente(clientes, id);
+  clientes.length = 0;
+  clientes.push(...novaLista);
+  renderizarClientes();
+}
+
+function removerCliente(lista, id) {
+  return lista.filter(c => c.id !== id);
+}
+
+function atualizarCliente(lista, id, novosDados) {
+  const indice = lista.findIndex(c => c.id === id);
+  if (indice !== -1) {
+    lista[indice] = { ...lista[indice], ...novosDados };
+  }
+  return lista;
+}
+
+
+function prepararEdicao(id) {
+  const cliente = clientes.find(c => c.id === id);
+  if (!cliente) return;
+
+  document.getElementById("cliente-id").value = cliente.id;
+  document.getElementById("nome").value = cliente.nome;
+  document.getElementById("email").value = cliente.email;
+}
 function renderizarClientes() {
   const ul = document.getElementById("lista-clientes");
   ul.innerHTML = "";
@@ -38,9 +66,12 @@ document.getElementById("cliente-form").addEventListener("submit", function (e) 
   const email = document.getElementById("email").value;
 
   
-  const cliente = criarCliente(nome, email);
-  adicionarCliente(clientes, cliente);
-  
+   if (id) {
+    atualizarCliente(clientes, id, { nome, email });
+  } else {
+    const cliente = criarCliente(nome, email);
+    adicionarCliente(clientes, cliente);
+  }
 
   this.reset();
   document.getElementById("cliente-id").value = "";

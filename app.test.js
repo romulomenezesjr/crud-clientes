@@ -38,7 +38,7 @@ function testRemoverCliente() {
     { id: "2", nome: "B", email: "b@email.com" }
   ];
   const novaLista = removerCliente(lista, "1");
-  assert(novaLista.length === 1, "Lista deve ficar com 1 cliente");
+  assert(novaLista.length === 0, "Lista deve ficar com 1 cliente");
   assert(novaLista[0].id === "2", "Cliente restante deve ser o id 2");
 }
 

@@ -13,17 +13,6 @@ function adicionarCliente(lista, cliente) {
   return lista;
 }
 
-function excluirCliente(id) {
-  const novaLista = removerCliente(clientes, id);
-  clientes.length = 0;
-  clientes.push(...novaLista);
-  renderizarClientes();
-}
-
-function removerCliente(lista, id) {
-  return lista.filter(c => c.id !== id);
-}
-
 function atualizarCliente(lista, id, novosDados) {
   const indice = lista.findIndex(c => c.id === id);
   if (indice !== -1) {
@@ -32,15 +21,10 @@ function atualizarCliente(lista, id, novosDados) {
   return lista;
 }
 
-
-function prepararEdicao(id) {
-  const cliente = clientes.find(c => c.id === id);
-  if (!cliente) return;
-
-  document.getElementById("cliente-id").value = cliente.id;
-  document.getElementById("nome").value = cliente.nome;
-  document.getElementById("email").value = cliente.email;
+function removerCliente(lista, id) {
+  return lista.filter(c => c.id !== id);
 }
+
 function renderizarClientes() {
   const ul = document.getElementById("lista-clientes");
   ul.innerHTML = "";
@@ -58,22 +42,48 @@ function renderizarClientes() {
   });
 }
 
-document.getElementById("cliente-form").addEventListener("submit", function (e) {
-  e.preventDefault();
+function prepararEdicao(id) {
+  const cliente = clientes.find(c => c.id === id);
+  if (!cliente) return;
 
-  const id = document.getElementById("cliente-id").value;
-  const nome = document.getElementById("nome").value;
-  const email = document.getElementById("email").value;
+  document.getElementById("cliente-id").value = cliente.id;
+  document.getElementById("nome").value = cliente.nome;
+  document.getElementById("email").value = cliente.email;
+}
 
-  
-   if (id) {
-    atualizarCliente(clientes, id, { nome, email });
-  } else {
-    const cliente = criarCliente(nome, email);
-    adicionarCliente(clientes, cliente);
-  }
-
-  this.reset();
-  document.getElementById("cliente-id").value = "";
+function excluirCliente(id) {
+  const novaLista = removerCliente(clientes, id);
+  clientes.length = 0;
+  clientes.push(...novaLista);
   renderizarClientes();
-});
+}
+
+if (typeof document !== "undefined") {
+  document.getElementById("cliente-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const id = document.getElementById("cliente-id").value;
+    const nome = document.getElementById("nome").value;
+    const email = document.getElementById("email").value;
+
+    if (id) {
+      atualizarCliente(clientes, id, { nome, email });
+    } else {
+      const cliente = criarCliente(nome, email);
+      adicionarCliente(clientes, cliente);
+    }
+
+    this.reset();
+    document.getElementById("cliente-id").value = "";
+    renderizarClientes();
+  });
+}
+
+if (typeof module !== "undefined") {
+  module.exports = {
+    criarCliente,
+    adicionarCliente,
+    atualizarCliente,
+    removerCliente
+  };
+}

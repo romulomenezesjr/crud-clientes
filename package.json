@@ -1,0 +1,9 @@
+{
+  "name": "crud-clientes",
+  "version": "1.0.0",
+  "description": "CRUD simples com HTML, CSS e JavaScript",
+  "main": "app.js",
+  "scripts": {
+    "test": "node app.test.js"
+  }
+}
